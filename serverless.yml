@@ -1,0 +1,24 @@
+service: food-clf-serverless
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  stage: prod
+  region: us-east-1
+  runtime: python3.10
+  memorySize: 3008
+  timeout: 300
+  ecr:
+    images:
+      food-classifier-lambda:
+        uri: 061924184909.dkr.ecr.us-east-1.amazonaws.com/food-classifier-lambda:latest
+
+functions:
+  foodclassifier:
+    image:
+      name: food-classifier-lambda
+    events:
+      - httpApi:
+          path: /predict
+          method: post
+    architecture: arm64
